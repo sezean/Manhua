@@ -3,117 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZhenHua Reader - Style ManhuaDesu</title>
+    <title>ZhenHua Desu - Official</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0f1117; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
-        .manga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 15px; }
-        .manga-card { background: #1a1d26; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: 0.3s; }
-        .manga-card:hover { transform: translateY(-5px); }
-        .thumb-container { position: relative; width: 100%; padding-top: 140%; }
-        .thumb-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        .manga-title { padding: 8px; font-size: 13px; font-weight: 600; line-height: 1.2; height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .chapter-list-item { background: #1a1d26; margin-bottom: 5px; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #ed1c24; }
-        .reader-img { width: 100%; display: block; background: #000; }
-        .loader { border: 3px solid #333; border-top: 3px solid #ed1c24; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: auto; }
+        body { background-color: #0b0d12; color: #f1f5f9; font-family: 'Inter', sans-serif; }
+        .manga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; padding: 15px; }
+        .manga-card { background: #161921; border-radius: 8px; overflow: hidden; position: relative; transition: 0.3s; border: 1px solid #232936; }
+        .manga-card:active { transform: scale(0.95); }
+        .thumb { width: 100%; height: 200px; object-fit: cover; }
+        .title-tag { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px 8px 8px; font-size: 11px; font-weight: bold; line-height: 1.2; }
+        .chapter-item { background: #1a1e29; margin-bottom: 8px; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; border-left: 4px solid #ff4646; }
+        .reader-img { width: 100%; display: block; margin-bottom: 2px; }
+        .loader { border: 3px solid #222; border-top: 3px solid #ff4646; border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <header class="bg-[#1a1d26] p-4 sticky top-0 z-40 border-b border-gray-800">
-        <div class="max-w-4xl mx-auto flex flex-col gap-3">
-            <h1 class="text-xl font-black text-[#ed1c24] tracking-tighter uppercase">ZHENHUA <span class="text-white">DESU</span></h1>
+    <header class="bg-[#161921] p-4 sticky top-0 z-50 border-b border-[#232936]">
+        <div class="max-w-2xl mx-auto flex flex-col gap-3">
+            <h1 class="text-xl font-black italic text-[#ff4646]">ZHENHUA <span class="text-white">DESU</span></h1>
             <div class="flex gap-2">
-                <input id="searchInput" type="text" placeholder="Cari manhua favorit lo..." class="flex-1 bg-[#0f1117] border border-gray-700 p-2 rounded text-sm focus:outline-none focus:border-[#ed1c24]">
-                <button onclick="searchManga()" class="bg-[#ed1c24] px-4 py-2 rounded font-bold text-sm hover:bg-red-700 transition">CARI</button>
+                <input id="searchInput" type="text" placeholder="Cari manhua..." class="flex-1 bg-[#0b0d12] border border-[#2d3548] p-2.5 rounded-lg text-sm focus:outline-none focus:border-[#ff4646]">
+                <button onclick="searchManga()" class="bg-[#ff4646] px-5 py-2 rounded-lg font-bold text-sm">CARI</button>
             </div>
         </div>
     </header>
 
-    <main id="mainContent" class="max-w-4xl mx-auto min-h-screen">
+    <div id="mainContent" class="max-w-2xl mx-auto min-h-screen">
         <div id="contentDisplay" class="manga-grid">
-            <p class="col-span-full text-center py-20 text-gray-500 italic">Ketik judul di atas untuk mencari...</p>
+             <p class="col-span-full text-center py-20 text-gray-500 italic">Cari judul favorit lo, ZhenHua!</p>
         </div>
-    </main>
+    </div>
 
-    <div id="viewer" class="hidden fixed inset-0 bg-black z-50 overflow-y-auto">
-        <div class="bg-[#1a1d26]/90 p-3 sticky top-0 flex justify-between items-center z-[60]">
-            <button onclick="closeViewer()" class="text-white bg-gray-800 px-3 py-1 rounded text-xs font-bold uppercase">Kembali</button>
-            <span id="navTitle" class="text-xs font-semibold truncate px-4"></span>
-            <div class="w-10"></div>
+    <div id="viewer" class="hidden fixed inset-0 bg-black z-[60] overflow-y-auto">
+        <div class="bg-[#161921]/95 p-4 sticky top-0 flex justify-between items-center border-b border-gray-800">
+            <button onclick="closeViewer()" class="bg-gray-800 px-4 py-1.5 rounded-md text-xs font-bold uppercase">Kembali</button>
+            <span id="navTitle" class="text-[10px] font-bold truncate px-4 text-red-500 italic"></span>
         </div>
         <div id="imageStream" class="flex flex-col items-center"></div>
     </div>
 
     <script>
+        // API Proxy & Image Proxy (Weserv)
         const PROXY = "https://api.allorigins.win/get?url=";
-        const IMG_PROXY = "https://wsrv.nl/?url=";
-
-        async function fetchAPI(url) {
-            try {
-                const res = await fetch(`${PROXY}${encodeURIComponent(url)}`);
-                const data = await res.json();
-                return JSON.parse(data.contents);
-            } catch (e) {
-                console.error("Fetch error:", e);
-                return null;
-            }
-        }
+        const IMG_PROXY = "https://images.weserv.nl/?url=";
 
         async function searchManga() {
             const q = document.getElementById('searchInput').value;
             const display = document.getElementById('contentDisplay');
             if(!q) return;
+            display.innerHTML = '<div class="col-span-full py-20"><div class="loader"></div><p class="text-center text-xs text-gray-500">Narik data...</p></div>';
             
-            display.innerHTML = '<div class="col-span-full py-20"><div class="loader"></div></div>';
-            
-            const api = `https://api.mangadex.org/manga?title=${encodeURIComponent(q)}&limit=20&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art`;
-            const data = await fetchAPI(api);
-            
-            if(!data || !data.data.length) {
-                display.innerHTML = '<p class="col-span-full text-center py-20 text-red-500">Judul tidak ditemukan!</p>';
-                return;
-            }
+            try {
+                // Kita pake MangaDex tapi dengan format include cover yang bener
+                const url = `https://api.mangadex.org/manga?title=${encodeURIComponent(q)}&limit=20&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic`;
+                const res = await fetch(`${PROXY}${encodeURIComponent(url)}`);
+                const raw = await res.json();
+                const data = JSON.parse(raw.contents);
 
-            display.innerHTML = "";
-            data.data.forEach(m => {
-                const title = m.attributes.title.en || m.attributes.title.ja || "No Title";
-                const cover = m.relationships.find(r => r.type === 'cover_art');
-                const fileName = cover ? cover.attributes.fileName : "";
-                const thumb = fileName ? `https://uploads.mangadex.org/covers/${m.id}/${fileName}.256.jpg` : "https://via.placeholder.com/200x300?text=No+Cover";
+                display.innerHTML = "";
+                data.data.forEach(m => {
+                    const title = m.attributes.title.en || Object.values(m.attributes.title)[0];
+                    const cover = m.relationships.find(r => r.type === 'cover_art');
+                    const fileName = cover ? cover.attributes.fileName : "";
+                    const thumb = `https://uploads.mangadex.org/covers/${m.id}/${fileName}.256.jpg`;
 
-                display.innerHTML += `
-                    <div onclick="getChapters('${m.id}', '${title.replace(/'/g, "")}')" class="manga-card cursor-pointer">
-                        <div class="thumb-container">
-                            <img src="${IMG_PROXY}${encodeURIComponent(thumb)}" loading="lazy" alt="cover">
-                        </div>
-                        <div class="manga-title">${title}</div>
-                    </div>`;
-            });
+                    display.innerHTML += `
+                        <div onclick="getChapters('${m.id}', '${title.replace(/'/g, "")}')" class="manga-card cursor-pointer">
+                            <img src="${IMG_PROXY}${encodeURIComponent(thumb)}" class="thumb" loading="lazy">
+                            <div class="title-tag">${title}</div>
+                        </div>`;
+                });
+            } catch (e) { display.innerHTML = '<p class="col-span-full text-center py-10">Koneksi Error!</p>'; }
         }
 
         async function getChapters(id, title) {
             const display = document.getElementById('contentDisplay');
             display.innerHTML = '<div class="col-span-full py-20"><div class="loader"></div></div>';
             
-            const api = `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=en&limit=100&order[chapter]=desc&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic`;
-            const data = await fetchAPI(api);
-            
-            display.innerHTML = `<div class="col-span-full p-2"><h2 class="text-lg font-bold text-[#ed1c24] mb-4">${title}</h2></div>`;
-            
-            if(!data || !data.data.length) {
-                display.innerHTML += '<p class="col-span-full text-center">Chapter tidak tersedia dalam bahasa Inggris.</p>';
-                return;
-            }
+            try {
+                const url = `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=en&limit=100&order[chapter]=desc&contentRating[]=pornographic&contentRating[]=erotica&contentRating[]=suggestive&contentRating[]=safe`;
+                const res = await fetch(`${PROXY}${encodeURIComponent(url)}`);
+                const raw = await res.json();
+                const data = JSON.parse(raw.contents);
 
-            data.data.forEach(ch => {
-                display.innerHTML += `
-                    <div onclick="viewImages('${ch.id}', 'Ch.${ch.attributes.chapter}')" class="col-span-full chapter-list-item cursor-pointer hover:bg-gray-800 transition">
-                        <span class="font-bold">Chapter ${ch.attributes.chapter || '0'}</span>
-                        <span class="text-[10px] text-gray-400">READ ></span>
-                    </div>`;
-            });
+                display.innerHTML = `<div class="col-span-full p-2 border-b border-gray-800 mb-4"><h2 class="text-lg font-black text-[#ff4646] uppercase italic">${title}</h2></div>`;
+                data.data.forEach(ch => {
+                    display.innerHTML += `
+                        <div onclick="viewImages('${ch.id}', 'Ch.${ch.attributes.chapter}')" class="col-span-full chapter-item cursor-pointer">
+                            <span class="font-bold">CHAPTER ${ch.attributes.chapter || '0'}</span>
+                            <span class="text-[10px] bg-[#ff4646] px-2 py-1 rounded font-bold uppercase">Baca</span>
+                        </div>`;
+                });
+            } catch (e) { alert("Gagal ambil list!"); }
         }
 
         async function viewImages(chId, fullTitle) {
@@ -121,33 +104,29 @@
             const viewer = document.getElementById('viewer');
             document.getElementById('navTitle').innerText = fullTitle;
             viewer.classList.remove('hidden');
-            stream.innerHTML = '<div class="py-40 text-center"><div class="loader mb-2"></div><p class="text-xs text-gray-500 italic">Membuka chapter...</p></div>';
+            stream.innerHTML = '<div class="py-40 text-center"><div class="loader"></div><p class="text-xs text-gray-500">Bypassing Server...</p></div>';
 
-            const data = await fetchAPI(`https://api.mangadex.org/at-home/server/${chId}`);
-            if(!data) {
-                alert("Gagal koneksi ke server!");
-                closeViewer();
-                return;
-            }
+            try {
+                const res = await fetch(`${PROXY}${encodeURIComponent('https://api.mangadex.org/at-home/server/' + chId)}`);
+                const raw = await res.json();
+                const data = JSON.parse(raw.contents);
+                const hash = data.chapter.hash;
+                const imgs = data.chapter.data;
 
-            const hash = data.chapter.hash;
-            const imgs = data.chapter.data;
-            stream.innerHTML = "";
-
-            imgs.forEach(file => {
-                const url = `https://uploads.mangadex.org/data/${hash}/${file}`;
-                const img = document.createElement('img');
-                img.className = "reader-img";
-                img.src = `${IMG_PROXY}${encodeURIComponent(url)}`;
-                img.loading = "lazy";
-                
-                img.onerror = () => {
-                    img.src = `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(url)}`;
-                };
-                
-                stream.appendChild(img);
-            });
-            viewer.scrollTo(0,0);
+                stream.innerHTML = "";
+                imgs.forEach(file => {
+                    const imgUrl = `https://uploads.mangadex.org/data/${hash}/${file}`;
+                    const img = document.createElement('img');
+                    img.className = "reader-img";
+                    // TRIPLE BYPASS: Weserv -> Google -> Direct
+                    img.src = `${IMG_PROXY}${encodeURIComponent(imgUrl)}&n=-1`;
+                    img.onerror = () => {
+                        img.src = `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(imgUrl)}`;
+                    };
+                    stream.appendChild(img);
+                });
+                viewer.scrollTo(0,0);
+            } catch (e) { alert("Gambar diblokir!"); closeViewer(); }
         }
 
         function closeViewer() { document.getElementById('viewer').classList.add('hidden'); }
